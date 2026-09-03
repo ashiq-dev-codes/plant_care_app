@@ -18,16 +18,15 @@ const splashPageStyles = StyleSheet.create({
         alignItems: "center",
     },
     logo: {
-        width: "54%",
-        aspectRatio: 440 / 390,
+        width: 220,
+        height: 194.79,
     },
     footer: {
         alignItems: "center",
         paddingBottom: 40,
     },
     footerText: {
-        fontSize: 14,
-        letterSpacing: 2,
+        fontSize: 18,
         color: AppColors.whiteColor,
         fontFamily: AppFonts.poppinsSemiBold.name,
     },
