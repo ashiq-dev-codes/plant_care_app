@@ -105,6 +105,13 @@ const loginPageStyles = StyleSheet.create({
         color: AppColors.blackColor,
         fontFamily: AppFonts.poppinsMedium.name,
     },
+    errorText: {
+        marginTop: 16,
+        fontSize: 13,
+        textAlign: "center",
+        color: AppColors.errorColor,
+        fontFamily: AppFonts.poppinsRegular.name,
+    },
 
     // Footer
     footer: {
