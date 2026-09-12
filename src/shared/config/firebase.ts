@@ -1,12 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FirebaseApp, getApp, getApps, initializeApp } from "firebase/app";
-// firebase/auth's package.json resolves "types" ahead of its "react-native"
-// condition, so getReactNativePersistence is invisible to tsc even though it
-// exists at runtime (confirmed in node_modules/@firebase/auth/dist/rn/index.js).
+// Importing from "@firebase/auth" directly (not the "firebase/auth" umbrella
+// re-export) so Metro's "react-native" condition actually resolves to
+// dist/rn/index.js — the umbrella package's own "./auth" export map has no
+// "react-native" condition at all, so it silently falls through to the
+// browser build, which is missing getReactNativePersistence and AsyncStorage
+// persistence (see https://expo.fyi/firebase-js-auth-setup).
+//
+// @firebase/auth's own package.json puts a sibling "types" condition ahead of
+// its "react-native" condition, so tsc always resolves the platform-agnostic
+// public types (which don't declare getReactNativePersistence) regardless of
+// the "customConditions": ["react-native"] in tsconfig — confirmed by
+// checking node_modules/@firebase/auth/dist/rn/index.rn.d.ts, where it *is*
+// declared. Hence the @ts-expect-error below; the function exists at runtime.
 /* eslint-disable import/no-duplicates */
-import { Auth, getAuth, initializeAuth } from "firebase/auth";
+import { Auth, getAuth, initializeAuth } from "@firebase/auth";
 // @ts-expect-error — see comment above
-import { getReactNativePersistence } from "firebase/auth";
+import { getReactNativePersistence } from "@firebase/auth";
 /* eslint-enable import/no-duplicates */
 
 const firebaseConfig = {

@@ -1,3 +1,4 @@
+import SnackbarHost from "@/src/shared/component/snackbar/SnackbarHost";
 import AppFonts from "@/src/shared/path/appFonts";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -34,6 +35,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }} />
+      <SnackbarHost />
     </GestureHandlerRootView>
   );
 }

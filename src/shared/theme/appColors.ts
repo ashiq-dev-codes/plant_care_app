@@ -8,6 +8,7 @@ class AppColors {
     static backgroundColor = "#EAF4EC";
     static grayColor = "#8B978E";
     static errorColor = "#D14343";
+    static successColor = "#2E7D32";
 
     // Equivalent to Flutter's Color.withOpacity() — appends an alpha byte to a #RRGGBB hex color.
     static withOpacity(hex: string, opacity: number): string {

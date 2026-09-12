@@ -9,4 +9,5 @@ export interface AuthState {
     status: AuthStatus;
     errorMessage: string | null;
     signInWithGoogle: () => Promise<void>;
+    signOut: () => Promise<void>;
 }

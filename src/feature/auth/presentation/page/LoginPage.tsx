@@ -1,7 +1,8 @@
 import AppImages from "@/src/shared/path/appImages";
 import AppColors from "@/src/shared/theme/appColors";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -17,14 +18,20 @@ import { useAuthStore } from "../store/useAuth.store";
 import loginPageStyles from "../style/loginPage.styles";
 
 const LoginPage = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const status = useAuthStore((state) => state.status);
-  const errorMessage = useAuthStore((state) => state.errorMessage);
   const signInWithGoogle = useAuthStore((state) => state.signInWithGoogle);
   const isGoogleSignInLoading = status === AuthStatus.Loading;
+
+  useEffect(() => {
+    if (status === AuthStatus.Success) {
+      router.replace("/home");
+    }
+  }, [status, router]);
 
   return (
     <SafeAreaView style={loginPageStyles.container} edges={["top", "bottom"]}>
@@ -103,10 +110,6 @@ const LoginPage = () => {
               </>
             )}
           </Pressable>
-
-          {errorMessage ? (
-            <Text style={loginPageStyles.errorText}>{errorMessage}</Text>
-          ) : null}
         </View>
 
         <View style={loginPageStyles.footer}>

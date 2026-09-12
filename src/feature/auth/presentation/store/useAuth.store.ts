@@ -1,9 +1,16 @@
 import { getFirebaseAuth } from "@/src/shared/config/firebase";
+import ErrorHandler from "@/src/shared/utils/errorHandler";
 import {
     GoogleSignin,
     isSuccessResponse,
 } from "@react-native-google-signin/google-signin";
-import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+// Imported from "@firebase/auth" directly, not the "firebase/auth" umbrella
+// re-export — see the comment in src/shared/config/firebase.ts for why.
+import {
+    GoogleAuthProvider,
+    signInWithCredential,
+    signOut as firebaseSignOut,
+} from "@firebase/auth";
 import { create } from "zustand";
 import { AuthState, AuthStatus } from "./useAuth.state";
 
@@ -39,9 +46,22 @@ export const useAuthStore = create<AuthState>((set) => ({
         } catch (error) {
             set({
                 status: AuthStatus.Failure,
-                errorMessage:
-                    error instanceof Error ? error.message : "Google sign-in failed",
+                errorMessage: ErrorHandler.handleError(error, "Google sign-in failed"),
             });
+        }
+    },
+
+    signOut: async () => {
+        try {
+            try {
+                await GoogleSignin.signOut();
+            } catch {
+                // best-effort — there may be no active Google session to clear
+            }
+            await firebaseSignOut(getFirebaseAuth());
+            set({ status: AuthStatus.Idle, errorMessage: null });
+        } catch (error) {
+            set({ errorMessage: ErrorHandler.handleError(error, "Sign-out failed") });
         }
     },
 }));
