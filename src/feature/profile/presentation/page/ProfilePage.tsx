@@ -64,7 +64,15 @@ const ProfilePage = () => {
       >
         <Text style={profilePageStyles.sectionTitle}>Account Setting</Text>
         {ACCOUNT_ROWS.map((row) => (
-          <Pressable key={row.key} style={profilePageStyles.row}>
+          <Pressable
+            key={row.key}
+            style={profilePageStyles.row}
+            onPress={
+              row.key === "edit-profile"
+                ? () => router.push("/edit-profile")
+                : undefined
+            }
+          >
             <Ionicons name={row.icon} size={20} color={AppColors.primaryColor} />
             <Text style={profilePageStyles.rowLabel}>{row.label}</Text>
             <Ionicons

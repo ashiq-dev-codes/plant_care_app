@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/src/feature/auth/presentation/store/useAuth.store";
 import SnackbarHost from "@/src/shared/component/snackbar/SnackbarHost";
 import AppFonts from "@/src/shared/path/appFonts";
 import { useFonts } from "expo-font";
@@ -9,6 +10,13 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const initializeAuth = useAuthStore((state) => state.initialize);
+
+  useEffect(() => {
+    const unsubscribe = initializeAuth();
+    return unsubscribe;
+  }, [initializeAuth]);
+
   const [fontsLoaded, fontError] = useFonts({
     // Poppins
     [AppFonts.poppinsThin.name]: AppFonts.poppinsThin.path,

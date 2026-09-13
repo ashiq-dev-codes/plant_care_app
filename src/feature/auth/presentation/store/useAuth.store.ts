@@ -8,6 +8,7 @@ import {
 // re-export — see the comment in src/shared/config/firebase.ts for why.
 import {
     GoogleAuthProvider,
+    onAuthStateChanged,
     signInWithCredential,
     signOut as firebaseSignOut,
 } from "@firebase/auth";
@@ -23,9 +24,25 @@ const configureGoogleSignIn = () => {
     isGoogleSignInConfigured = true;
 };
 
+let isAuthListenerAttached = false;
+
 export const useAuthStore = create<AuthState>((set) => ({
     status: AuthStatus.Idle,
     errorMessage: null,
+    user: null,
+    isInitializing: true,
+
+    initialize: () => {
+        if (isAuthListenerAttached) return () => {};
+        isAuthListenerAttached = true;
+        return onAuthStateChanged(getFirebaseAuth(), (user) => {
+            set({
+                user,
+                isInitializing: false,
+                status: user ? AuthStatus.Success : AuthStatus.Idle,
+            });
+        });
+    },
 
     signInWithGoogle: async () => {
         set({ status: AuthStatus.Loading, errorMessage: null });
