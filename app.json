@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "plant_care_app",
+    "name": "Plant Care",
     "slug": "plant_care_app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,9 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.plantcare.app",
+      "googleServicesFile": "./firebase/GoogleService-Info.plist"
     },
     "android": {
+      "package": "com.plantcare.app",
+      "googleServicesFile": "./firebase/google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -38,7 +42,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin"
     ],
     "experiments": {
       "typedRoutes": true,
